@@ -50,6 +50,10 @@ void findMinimalOnesNumber(int N) {
     cout << "NO" << endl;
 
 
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cout << "Время выполнения: " << duration.count() << " мс" << endl;
+    cout << "Использовано памяти: " << getMemoryUsage() << " KB" << endl;
 
 }
 
