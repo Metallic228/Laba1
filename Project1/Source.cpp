@@ -1,28 +1,28 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <queue>
 #include <unordered_set>
 #include <chrono>
 #include <windows.h>
-#include <psapi.h>  // Подключаем библиотеку для получения информации о процессе
+#include <psapi.h>  // РџРѕРґРєР»СЋС‡Р°РµРј Р±РёР±Р»РёРѕС‚РµРєСѓ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РїСЂРѕС†РµСЃСЃРµ
 #include <locale.h>
 
 using namespace std;
 using namespace chrono;
 
-// Функция для измерения используемой памяти в КБ
-size_t getMemoryUsage() { //функция типа size_t
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ РёР·РјРµСЂРµРЅРёСЏ РёСЃРїРѕР»СЊР·СѓРµРјРѕР№ РїР°РјСЏС‚Рё РІ РљР‘
+size_t getMemoryUsage() { //С„СѓРЅРєС†РёСЏ С‚РёРїР° size_t
     PROCESS_MEMORY_COUNTERS memInfo;
     if (GetProcessMemoryInfo(GetCurrentProcess(), &memInfo, sizeof(memInfo))) {
-        return memInfo.WorkingSetSize / 1024; // Преобразуем байты в килобайты
+        return memInfo.WorkingSetSize / 1024; // РџСЂРµРѕР±СЂР°Р·СѓРµРј Р±Р°Р№С‚С‹ РІ РєРёР»РѕР±Р°Р№С‚С‹
     }
-    return 0; // В случае ошибки вернём 0
+    return 0; // Р’ СЃР»СѓС‡Р°Рµ РѕС€РёР±РєРё РІРµСЂРЅС‘Рј 0
 }
 
 void findMinimalOnesNumber(int N) {
-    auto start = high_resolution_clock::now(); // Засекаем время
+    auto start = high_resolution_clock::now(); // Р—Р°СЃРµРєР°РµРј РІСЂРµРјСЏ
 
     queue<long long> q;
-    unordered_set<long long> visited; // Храним остатки, чтобы не проверять одно и то же
+    unordered_set<long long> visited; // РҐСЂР°РЅРёРј РѕСЃС‚Р°С‚РєРё, С‡С‚РѕР±С‹ РЅРµ РїСЂРѕРІРµСЂСЏС‚СЊ РѕРґРЅРѕ Рё С‚Рѕ Р¶Рµ
 
     q.push(1);
     while (!q.empty()) {
@@ -34,8 +34,8 @@ void findMinimalOnesNumber(int N) {
 
             auto stop = high_resolution_clock::now();
             auto duration = duration_cast<milliseconds>(stop - start);
-            cout << "Время выполнения: " << duration.count() << " мс" << endl;
-            cout << "Использовано памяти: " << getMemoryUsage() << " KB" << endl;
+            cout << "Р’СЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ: " << duration.count() << " РјСЃ" << endl;
+            cout << "РСЃРїРѕР»СЊР·РѕРІР°РЅРѕ РїР°РјСЏС‚Рё: " << getMemoryUsage() << " KB" << endl;
             return;
         }
 
@@ -49,16 +49,13 @@ void findMinimalOnesNumber(int N) {
 
     cout << "NO" << endl;
 
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(stop - start);
-    cout << "Время выполнения: " << duration.count() << " мс" << endl;
-    cout << "Использовано памяти: " << getMemoryUsage() << " KB" << endl;
+
 }
 
 int main() {
     setlocale(LC_ALL, "rus");
     int N;
-    cout << "Введите число N: ";
+    cout << "Р’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ N: ";
     cin >> N;
 
     findMinimalOnesNumber(N);
