@@ -50,6 +50,7 @@ void findMinimalOnesNumber(int N) {
     cout << "NO" << endl;
 
 
+
 }
 
 int main() {
