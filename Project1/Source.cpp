@@ -8,7 +8,6 @@
 using namespace std;
 using namespace chrono;
 
-// Функция для измерения используемой памяти в КБ
 size_t getMemoryUsage() {
     PROCESS_MEMORY_COUNTERS memInfo;
     if (GetProcessMemoryInfo(GetCurrentProcess(), &memInfo, sizeof(memInfo))) {
@@ -20,17 +19,23 @@ size_t getMemoryUsage() {
 struct Node {
     int remainder;
     int prevIndex;
-    bool bit;
 };
 
 void findMinimalOnesNumber(int N) {
     auto start = high_resolution_clock::now();
 
+    if (N == 1) {
+        cout << "Минимальное число: 1\n";
+        cout << "Время выполнения: 0 мс\n";
+        cout << "Использовано памяти: " << getMemoryUsage() << " KB\n";
+        return;
+    }
+
     vector<Node> nodes;
     vector<bool> visited(N, false);
     queue<int> q;
 
-    nodes.push_back({ 1 % N, -1, true }); // Начинаем с 1
+    nodes.push_back({ 1 % N, -1 });
     visited[1 % N] = true;
     q.push(0);
 
@@ -40,25 +45,18 @@ void findMinimalOnesNumber(int N) {
         int index = q.front();
         q.pop();
 
-        Node current = nodes[index];
+        int currentRemainder = nodes[index].remainder;
 
-        if (current.remainder == 0) {
+        if (currentRemainder == 0) {
             finalIndex = index;
             break;
         }
 
-        int remainder0 = (current.remainder * 10) % N;
-        int remainder1 = (current.remainder * 10 + 1) % N;
+        int nextRemainder = (currentRemainder * 10 + 1) % N;
 
-        if (!visited[remainder0]) {
-            visited[remainder0] = true;
-            nodes.push_back({ remainder0, index, false });
-            q.push(nodes.size() - 1);
-        }
-
-        if (!visited[remainder1]) {
-            visited[remainder1] = true;
-            nodes.push_back({ remainder1, index, true });
+        if (!visited[nextRemainder]) {
+            visited[nextRemainder] = true;
+            nodes.push_back({ nextRemainder, index });
             q.push(nodes.size() - 1);
         }
     }
@@ -71,15 +69,15 @@ void findMinimalOnesNumber(int N) {
         int index = finalIndex;
 
         while (index != -1) {
-            result = (nodes[index].bit ? '1' : '0') + result;
+            result = '1' + result;
             index = nodes[index].prevIndex;
         }
 
         cout << "Минимальное число: " << result << endl;
+        cout << "Колличество единиц в числе: " << result.length() << endl;
         cout << "Время выполнения: " << duration.count() << " мс" << endl;
         cout << "Использовано памяти: " << getMemoryUsage() << " KB" << endl;
-    }
-    else {
+    } else {
         cout << "Решение не найдено." << endl;
         cout << "Время выполнения: " << duration.count() << " мс" << endl;
         cout << "Использовано памяти: " << getMemoryUsage() << " KB" << endl;
@@ -98,6 +96,5 @@ int main() {
     }
 
     findMinimalOnesNumber(N);
-
     return 0;
 }
